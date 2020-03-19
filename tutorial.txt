@@ -1,0 +1,34 @@
+Hướng dẫn sử dụng chương trình khử nhiễu DWSAE
+I. Tổng quan:
+Mô hình mạng học sâu DWSAE được tạo ra để giúp loại bỏ nhiễu EOGs - loại nhiễu phổ biến gây giảm chất lượng tín hiệu trong tín hiệu điện não EEG. Nguyên tắc hoạt động là mô hình sẽ được huấn luyện với dữ liệu không có nhiễu của tín hiệu và tái tạo là phần tín hiệu sạch khi gặp dữ liệu tín hiệu có nhiễu. Dưới đây là hướng dẫn cơ bản chạy code của mô hình này.
+II. Cài đặt các module cơ bản:
+- Chương trình được có 2 phần, 1 phần được viết bằng Python và 1 phần viết bằng Matlab. Để chạy chương trình đầu tiên cần cài đặt Matlab (bản 2016a hoặc mới hơn) và Python 3 ( mới nhất là Python 3.8).
+- Cài đặt các package cần thiết cho Python: numpy, scipy, matplotlib, pywt.
+- Có nhiều cách cài đặt các package này trong hướng dẫn này giới thiệu một cách là cài thông qua Anaconda.
+- Cài Anaconda tại  https://www.anaconda.com/distribution/ . Chọn cài bản phù hợp hệ điều hành và bản Python.
+- Mở Anaconda Prompt cài các package cần thiết bằng lệnh conda install + tên package
+
+III. Các thành phần trong chương trình:
+1. Các file m-file:
+ Đây là các file chạy trên Matlab, cần phải chạy trước. Chi tiết các file như sau:
+- Find_1_ver3: hàm tìm ra nhiễu EOGs. Chú ý hàm này để giá trị input thứ 2 là false thì ko vẽ hình tín hiệu có nhiễu, muốn có hình nhiễu cần đổi thành true.
+- haar.m: Haar wavelet
+- generateTrainData và generatTestData: 2 hàm tạo ra dữ liệu để chạy mạng DWSAE ở file chương trình python
+- load_file.m: đây là file chương trình chính, chỉ cần chạy file này các file khác đều là các hàm file này gọi ra. Chạy file này chương trình sẽ chạy các hàm khác để tìm ra nhiễu EOGs trên cả 14 kênh dữ liệu EEG. Đường dẫn filename là để chọn file dữ liệu trong thư mục 1 WORKING. 
+
+2. Các file Python:
+Sau khi chạy file load_file.m thì mới chạy file Python. 
+- TestSAE và TrainSAE: 2  đoạn code chưa 2 hàm train mạng DWSAE và test với đoạn khử nhiễu.
+- SAE.py: source code mạng SAE.
+- utility: các hàm tính wavelet, nhập tham số mạng SAE, v.v.
+- run_full_channel.py: đây là file chính, cần chạy file này. Khi click run nhập số trong khoảng 1 -14 (để chọn channel muốn khử nhiễu) rồi enter, chương trình tự động huấn luyện mạng DWSAE rồi plot tín hiệu trước và sau khi sửa nhiễu EOGs. Sau thực hiện bước này hoàn thành chạy code.
+
+3. Thư mục 1 WORKING:
+Đây là thư mục lưu các dữ liệu EEG của  12 đối tượng. 
+4. Thư mục models:
+Thư mục lưu giữ model SAE sau khi huấn luyện.
+5. thư mục data_EOG:
+Thư mục lưu data của EOGs trên đoạn tín hiệu EEG trước khi đưa vào mô hình DWSAE để huấn luyện và khử nhiễu.
+
+
+
